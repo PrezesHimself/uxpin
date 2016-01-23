@@ -1,0 +1,318 @@
+* {
+    box-sizing: border-box;
+}
+
+//typography.scss
+$media-s: "only screen and (max-width: 48em)";
+$color-blue: #2294e4;
+$color-green: #63ad0e;
+
+html body * {
+    font-family: 'Open Sans', sans-serif;
+}
+
+html {
+    background: white;
+    transition: background .3s linear;
+}
+
+html.modal-open {
+    background: black;
+}
+
+body {
+    h3 {
+        color: $color-blue;
+        font-size: 30px;
+        line-height: 36px;
+    }
+    h4 {
+        color: #505050;
+        font-size: 20px;
+        line-height: 36px;
+    }
+    p, label {
+        font-size: 14px;
+        line-height: 36px;
+        color: #666666;
+    }
+    a, a:hover, a:active {
+        text-decoration: inherit;
+        color: inherit;
+        font-size: 14px;
+        line-height: 36px;
+        color: #666666;
+    }
+    [disabled] ~ label {
+        cursor: not-allowed;
+        color: #c6c6c6;
+    }
+}
+
+.color-green {
+    color: $color-green;
+}
+
+// data-email
+
+[data-email] {
+    p {
+        input[type='checkbox'] {
+            margin-right: 5px;
+        }
+        label {
+            display: inline-block;
+            width: auto;
+            padding-right: 20px;
+        }
+    }
+}
+
+// inputs
+
+.uxpin-input {
+    display: inline-block;
+    width: 100%;
+    color: #666666;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    border: 1px solid #f2f2f2;
+    background: #fff;
+    -webkit-border-radius: 0;
+    border-radius: 3px;
+    padding: 5px;
+    font-size: 14px;
+    &:focus {
+        outline: none;
+    }
+    &.button-primary {
+        padding: 10px 50px;
+        width: auto;
+        color: $color-blue;
+        border: 1px solid $color-blue;
+        background: rgba($color-blue, 0.05);
+    }
+    &.button-secondary {
+        padding: 10px 10px;
+        width: auto;
+        color: #b6b6b6;
+        border: 0;
+        background: transparent;
+        text-decoration: underline;
+    }
+    &.input-inline {
+        display: inline-block;
+        width: auto;
+    }
+}
+
+[disabled] ~ .uxpin-input {
+    opacity: .4;
+}
+
+// content.scss
+.content-wrapper {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background: #000 url("/images/bg.jpg");
+    background-size: cover;
+    transition: all .6s linear;
+}
+
+.modal-open .content-wrapper {
+    filter: brightness(30%) blur(20px);
+}
+
+// modal.scss
+$modal-width: 1240px !default;
+$modal-height: 720px !default;
+
+.modal-wrapper {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    pointer-events: none;
+    @media #{$media-s} {
+        display: block;
+        position: relative;
+    }
+}
+
+.modal-open .modal-wrapper {
+    pointer-events: all;
+}
+
+.modal {
+    max-height: $modal-height;
+    max-width: $modal-width;
+    width: 100%;
+    background: white;
+    opacity: 0;
+    transform: scale(0, 0);
+    transition: all .3s linear;
+    padding: 50px;
+    margin: 20px;
+    @media #{$media-s} {
+        padding: 25px;
+        margin: 0;
+        max-height: 0;
+        min-height: 100vh;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+    .close-btn {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+    section {
+        display: none;
+        &.active {
+            display: block;
+        }
+    }
+}
+
+.modal-open .modal {
+    opacity: 1;
+    transform: scale(1, 1);
+}
+
+// modal content
+
+.modal-content {
+    min-height: 200px;
+    label {
+        width: 100%;
+        display: block;
+    }
+    .submit-section {
+        margin-top: 30px;
+    }
+    a, a:hover, a:active {
+        text-decoration: inherit;
+        color: inherit;
+        font-size: 14px;
+        line-height: 36px;
+        color: $color-blue;
+        text-decoration: underline;
+    }
+}
+
+// user-avatar
+
+.user-avatar {
+    display: flex;
+}
+
+.user-avarat-img {
+    flex: 0 0 120px;
+    max-width: 120px;
+    height: 120px;
+    background: #484848 url("/images/han_solo.jpg") no-repeat;
+    position: relative;
+    overflow: hidden;
+    .hover {
+        content: '';
+        position: absolute;
+        top: 0%;
+        width: 100%;
+        height: 100%;
+        background: rgba($color-blue, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translateY(-100%);
+        transition: transform .3s ease-in-out;
+        i {
+          margin: 0 8px;
+          color: white;
+        }
+    }
+    &:hover .hover {
+        transform: translateY(0%);
+    }
+}
+
+.user-avarat-copy {
+    padding-left: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    p {
+        color: #b4b4b4;
+        font-size: 12px;
+        line-height: 14px;
+        a {
+            color: #666666;
+            font-size: 14px;
+        }
+    }
+}
+
+// modal nav
+
+.modal-nav {
+    .nav {
+        display: flex;
+        justify-content: space-between;
+    }
+    .nav-item {
+        flex: 1 1 auto;
+        a {
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+            height: 25px;
+            padding: 0 10px 30px 10px;
+            padding-bottom: 50px;
+            text-align: center;
+            border-bottom: 0px solid transparent;
+            transition: all .3s linear;
+            &:hover, .active {
+                color: $color-blue;
+                border-bottom: 4px solid $color-blue;
+                padding-bottom: 44px;
+            }
+            i {
+                margin-right: 10px;
+            }
+        }
+        &.active a {
+            opacity: .2;
+        }
+        &.separator {
+            background: #fafafa;
+            width: 1px;
+            flex: 0 0 1px;
+        }
+        &.separator, &.separator ~ .nav-item {
+            @media #{$media-s} {
+                display: none;
+            }
+        }
+        @media #{$media-s} {
+            i {
+                display: block;
+            }
+        }
+    }
+}
+
+// modal separator
+
+.modal-separator {
+    margin: 0 -50px;
+    height: 1px;
+    background: #fafafa;
+    margin-bottom: 40px;
+}
