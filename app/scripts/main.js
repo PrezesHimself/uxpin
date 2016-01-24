@@ -1,58 +1,86 @@
 'use strict';
 /* jshint devel:true */
-var elements = [];
+function UXPin (jquery) {
 
+	var elements = [];
 
-function UXPin () {}
+	elements.body = jquery('body');
+	elements.html = jquery('html');
 
-UXPin.setLocation = function(location) {
-	$(this).addClass('active');
-	UXPin.resetView();
-	location = location ? '/#'+location : '/';
-	window.history.pushState('', '', location);
-	UXPin.refreshView();
-};
+	var setLocation = function(location, button) {
+		
+		this.resetView();
+		location = location ? '/#'+location : '/';
+		window.history.pushState('', '', location);
+		this.refreshView();
 
-UXPin.getLocation = function() {
-	return window.location.hash.substring(1);
-};
+		if(button) {
+			$(button).addClass('active');
+		}
+	};
 
-UXPin.refreshView = function() {
-	$('[data-'+UXPin.getLocation()+']').addClass('active');
-	if(!UXPin.getLocation()) {
+	var getLocation = function() {
+		return window.location.hash.substring(1);
+	};
+
+	var refreshView = function() {
+		$('[data-'+this.getLocation()+']').addClass('active');
+		if(!this.getLocation()) {
+			elements.html.removeClass('modal-open');
+		}
+	};
+
+	var resetView = function() {
+		$('.active').removeClass('active');
+	};
+
+	var openModal = function() {
+		elements.html.addClass('modal-open');
+	};
+
+	var closeModal = function() {
 		elements.html.removeClass('modal-open');
-	}
-};
+	};
 
-UXPin.resetView = function() {
-	$('.active').removeClass('active');
-};
+
+	return {
+		setLocation: setLocation,
+		getLocation: getLocation,
+		refreshView: refreshView,
+		resetView: resetView,
+		openModal: openModal,
+		closeModal: closeModal
+	};
+}
+
+
+
+
 
 $(document).ready(function() {
-	elements.body = $('body');
-	elements.html = $('html');
+	var uxpin = window.uxpin = new UXPin($);
 
-	if(UXPin.getLocation()) {
-		elements.html.addClass('modal-open');
+	if(uxpin.getLocation()) {
+		uxpin.openModal();
 	} 
 
 	$('.content-wrapper').click(function() {
-		UXPin.setLocation('profile');
-		elements.html.addClass('modal-open');
+		uxpin.setLocation('profile');
+		uxpin.openModal();
 	});
 
 
 	$('.close-btn').click(function() {
-		UXPin.setLocation();
-		elements.html.removeClass('modal-open');
+		uxpin.setLocation();
+		uxpin.closeModal();
 	});
 
-	UXPin.refreshView();
+	uxpin.refreshView();
 
 });
 
 
 window.onhashchange = function() {
-	UXPin.setLocation(UXPin.getLocation());
+	window.uxpin.setLocation(window.uxpin.getLocation());
 };
 

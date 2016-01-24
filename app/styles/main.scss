@@ -4,6 +4,8 @@
 
 //typography.scss
 $media-s: "only screen and (max-width: 48em)";
+$media-m: "only screen and (max-width: 64em)";
+$media-l: "only screen and (max-width: 75em)";
 $color-blue: #2294e4;
 $color-green: #63ad0e;
 
@@ -25,6 +27,7 @@ body {
         color: $color-blue;
         font-size: 30px;
         line-height: 36px;
+        font-weight: 300;
     }
     h4 {
         color: #505050;
@@ -42,6 +45,7 @@ body {
         font-size: 14px;
         line-height: 36px;
         color: #666666;
+        cursor: pointer;
     }
     [disabled] ~ label {
         cursor: not-allowed;
@@ -71,19 +75,50 @@ body {
 // inputs
 
 .uxpin-input {
-    display: inline-block;
-    width: 100%;
-    color: #666666;
-    -moz-appearance: none;
-    -webkit-appearance: none;
-    border: 1px solid #f2f2f2;
-    background: #fff;
-    -webkit-border-radius: 0;
-    border-radius: 3px;
-    padding: 5px;
-    font-size: 14px;
-    &:focus {
-        outline: none;
+    &, > select {
+        display: inline-block;
+        width: 100%;
+        color: #666666;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        border: 1px solid #f2f2f2;
+        background: #fff;
+        -webkit-border-radius: 0;
+        border-radius: 3px;
+        padding: 5px;
+        font-size: 14px;
+        &:focus {
+            outline: none;
+        }
+    }
+    > select {
+        border: 0;
+        cursor: pointer;
+    }
+    &.uxpin-select {
+        position: relative;
+        padding: 0;
+        width: 100%;
+        > select {
+            padding-right: 45px;
+        }
+        &:after {
+            pointer-events: none;
+            content: "\f078";
+            display: inline-flex;
+            align-items: center;
+            color: rgba(black, 0.2);
+            font: normal normal normal 14px/1 FontAwesome;
+            font-size: 10px;
+            font-weight: lighter;
+            text-rendering: auto;
+            -webkit-font-smoothing: antialiased;
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100%;
+            padding-right: 10px;
+        }
     }
     &.button-primary {
         padding: 10px 50px;
@@ -115,7 +150,7 @@ body {
     position: absolute;
     width: 100vw;
     height: 100vh;
-    background: #000 url("/images/bg.jpg");
+    background: #000 url("../images/bg.jpg");
     background-size: cover;
     transition: all .6s linear;
 }
@@ -163,16 +198,19 @@ $modal-height: 720px !default;
         margin: 0;
         max-height: 0;
         min-height: 100vh;
-        position: absolute;
+        position: fixed;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
+        overflow-y: scroll;
+        overflow-x: hidden;
     }
     .close-btn {
         position: absolute;
         top: 20px;
         right: 20px;
+        cursor: pointer;
     }
     section {
         display: none;
@@ -206,19 +244,30 @@ $modal-height: 720px !default;
         color: $color-blue;
         text-decoration: underline;
     }
+    [class^='col'] > div {
+        margin-right: 45px;
+    }
 }
 
 // user-avatar
 
 .user-avatar {
     display: flex;
+    @media #{$media-l} {
+        flex-wrap: wrap;
+        .user-avarat-copy {
+            flex: 1 1 100%;
+            min-width: 100%;
+            padding-left: 0;
+        }
+    }
 }
 
 .user-avarat-img {
     flex: 0 0 120px;
     max-width: 120px;
     height: 120px;
-    background: #484848 url("/images/han_solo.jpg") no-repeat;
+    background: #484848 url("../images/han_solo.jpg") no-repeat;
     position: relative;
     overflow: hidden;
     .hover {
@@ -234,8 +283,8 @@ $modal-height: 720px !default;
         transform: translateY(-100%);
         transition: transform .3s ease-in-out;
         i {
-          margin: 0 8px;
-          color: white;
+            margin: 0 8px;
+            color: white;
         }
     }
     &:hover .hover {
@@ -262,26 +311,29 @@ $modal-height: 720px !default;
 // modal nav
 
 .modal-nav {
+    margin-top: 20px;
     .nav {
         display: flex;
         justify-content: space-between;
     }
     .nav-item {
+        $padding-bottom: 15px;
+        $border-bottom: 4px;
         flex: 1 1 auto;
+        cursor: pointer;
         a {
             display: inline-block;
             width: 100%;
             height: 100%;
-            height: 25px;
             padding: 0 10px 30px 10px;
-            padding-bottom: 50px;
+            padding-bottom: $padding-bottom;
             text-align: center;
             border-bottom: 0px solid transparent;
             transition: all .3s linear;
-            &:hover, .active {
+            &:hover, &.active {
                 color: $color-blue;
-                border-bottom: 4px solid $color-blue;
-                padding-bottom: 44px;
+                border-bottom: $border-bottom solid $color-blue;
+                padding-bottom: $padding-bottom - $border-bottom;
             }
             i {
                 margin-right: 10px;
@@ -291,16 +343,31 @@ $modal-height: 720px !default;
             opacity: .2;
         }
         &.separator {
-            background: #fafafa;
-            width: 1px;
             flex: 0 0 1px;
+            span {
+                display: inline-block;
+                background: #fafafa;
+                width: 1px;
+                height: 25px;
+            }
         }
         &.separator, &.separator ~ .nav-item {
-            @media #{$media-s} {
+            @media #{$media-l} {
                 display: none;
             }
         }
-        @media #{$media-s} {
+        @media #{$media-l} {
+            a {
+                padding-bottom: 10px;
+                &:hover, &.active {
+                    color: $color-blue;
+                    border-bottom: 4px solid $color-blue;
+                    padding-bottom: 4px;
+                }
+                i {
+                    margin: 0;
+                }
+            }
             i {
                 display: block;
             }
@@ -314,5 +381,5 @@ $modal-height: 720px !default;
     margin: 0 -50px;
     height: 1px;
     background: #fafafa;
-    margin-bottom: 40px;
+    margin-bottom: 35px;
 }
