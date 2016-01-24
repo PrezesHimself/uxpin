@@ -4,8 +4,8 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-      "start": "gulp serve",
-      "postinstall": "gulp serve"
+      "start": "gulp",
+      "postinstall": "gulp"
     },
   "devDependencies": {
     "autoprefixer-core": "^4.0.2",
