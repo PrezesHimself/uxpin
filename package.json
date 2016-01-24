@@ -4,11 +4,12 @@
     "node": "0.12.7"
   },
   "scripts": {
-      "start": "gulp",
-      "postinstall": "gulp"
-    },
+    "start": "",
+    "postinstall": ""
+  },
   "dependencies": {
     "autoprefixer-core": "^4.0.2",
+    "bower": "^1.7.2",
     "browser-sync": "^1.8.2",
     "del": "^1.1.1",
     "gulp": "^3.9.0",
